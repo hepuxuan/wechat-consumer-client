@@ -41,6 +41,6 @@ fetch('/config').then((res) => {
   })
   wx.config({
     ...config,
-    jsApiList: ['scanQRCode']
+    jsApiList: ['scanQRCode', 'getLocation']
   })
 })
