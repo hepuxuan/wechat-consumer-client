@@ -4,10 +4,11 @@ import React from 'react'
 import Input from './Input'
 import { Link } from 'react-router'
 
-export default class CreateQrCode extends React.Component {
+export default class CreateInvoice extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      ...JSON.parse(localStorage.getItem('invoice')),
       success: false
     }
     this.onCompanyNameChange = this.onCompanyNameChange.bind(this)
@@ -17,6 +18,7 @@ export default class CreateQrCode extends React.Component {
     this.onBankNameChange = this.onBankNameChange.bind(this)
     this.onBankAccountChange = this.onBankAccountChange.bind(this)
     this.onSave = this.onSave.bind(this)
+    this.onCancel = this.onCancel.bind(this)
   }
 
   onCompanyNameChange (e) {
@@ -55,22 +57,31 @@ export default class CreateQrCode extends React.Component {
     })
   }
 
-  onSave () {
+  onSave (e) {
+    e.preventDefault()
     localStorage.setItem('invoice', JSON.stringify(this.state))
     this.setState({
       success: true
     })
   }
 
+  onCancel (e) {
+    e.preventDefault()
+    this.setState({
+      ...JSON.parse(localStorage.getItem('invoice')),
+      success: false
+    })
+  }
+
   render () {
     return (
       <div>
-        <h1>创建二维码</h1>
+        <h1>增值税模版</h1>
         {this.state.success
           ? (
             <div className='alert-success alert'>
-              成功生成二维码，您现在可以
-              <Link to='show'>浏览二维码</Link>
+              成功创建增值税模版，您现在可以
+              <Link to='scan'>扫描二维码</Link>
             </div>) : null}
         <form>
           <div className='weui-cells weui-cells_form'>
@@ -99,7 +110,10 @@ export default class CreateQrCode extends React.Component {
               pattern='[0-9]*'
               onChange={this.onBankAccountChange} label='开户银行帐号：' />
           </div>
-          <button type='submit' onClick={this.onSave} className='weui-btn weui-btn_primary'>确定</button>
+          <p className='weui-btn-area'>
+            <button type='submit' onClick={this.onSave} className='weui-btn weui-btn_primary'>保存</button>
+            <button onClick={this.onCancel} className='weui-btn weui-btn_warn'>取消</button>
+          </p>
         </form>
       </div>
     )

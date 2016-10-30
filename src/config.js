@@ -50,7 +50,6 @@ function getNonceStr() {
 function getConfig (cb) {
   getToken(function (error, token) {
     getNewTicket(token, function (error, result) {
-      console.log(result)
       var timestamp = getTimesTamp()
       var noncestr = getNonceStr()
       var str = 'jsapi_ticket=' + result + '&noncestr='+ noncestr+'&timestamp=' + timestamp + '&url=' + url
